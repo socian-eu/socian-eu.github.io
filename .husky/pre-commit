@@ -1,8 +1,19 @@
 #!/usr/bin/env bash
 
-echo "🔍 Running pre-commit security scan in dist..."
+# Security check: Prevent committing common secrets and PII patterns in Production Build
+echo "🔍 Running pre-commit security scan in build..."
 
-# Check for potential AWS keys, SSH keys, or common secrets
+EXIT_CODE=0
+
+# 1. Run gitleaks if available (global binary)
+if command -v gitleaks >/dev/null 2>&1; then
+  echo "  → Running gitleaks..."
+  if ! gitleaks protect --staged --verbose; then
+    EXIT_CODE=1
+  fi
+fi
+
+# 2. Manual pattern scan (portable fallback)
 SECRET_PATTERNS=(
   "AIza[0-9A-Za-z-_]{35}"        # Google API Key
   "AKIA[0-9A-Z]{16}"             # AWS Access Key
@@ -11,24 +22,21 @@ SECRET_PATTERNS=(
   "sk_live_[0-9a-zA-Z]{24}"      # Stripe Live Key
 )
 
-EXIT_CODE=0
-
 for PATTERN in "${SECRET_PATTERNS[@]}"; do
-  # Scan staged files for these patterns
+  # Scan staged files in the build repository
   if git diff --cached --name-only | xargs grep -E "$PATTERN" > /dev/null 2>&1; then
-    echo "❌ ERROR: Potential secret or sensitive data detected (matching pattern: $PATTERN)!"
+    echo "❌ ERROR: Potential secret detected in production assets (matching pattern: $PATTERN)!"
     EXIT_CODE=1
   fi
 done
 
-# Basic PII check (e.g., common email formats that shouldn't be hardcoded)
-# Excluding the brand email hello@socian.eu
+# 3. Basic PII check
 if git diff --cached --name-only | xargs grep -E "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" | grep -v "hello@socian.eu" | grep . > /dev/null 2>&1; then
-   echo "⚠️ WARNING: Potential email address (PII) detected in code. Please verify it is intended."
+   echo "⚠️ WARNING: Potential email address detected in production files."
 fi
 
 if [ $EXIT_CODE -ne 0 ]; then
-  echo "🚨 Commit aborted. Please remove sensitive data before committing."
+  echo "🚨 Commit aborted. Please check build artifacts for sensitive data."
   exit $EXIT_CODE
 fi
 
