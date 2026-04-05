@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+echo "🔍 Running pre-commit security scan in dist..."
+
+# Check for potential AWS keys, SSH keys, or common secrets
+SECRET_PATTERNS=(
+  "AIza[0-9A-Za-z-_]{35}"        # Google API Key
+  "AKIA[0-9A-Z]{16}"             # AWS Access Key
+  "-----BEGIN (RSA|OPENSSH|PRIVATE) KEY-----" # Private Keys
+  "xox[baprs]-[0-9a-zA-Z-]{10,}" # Slack Tokens
+  "sk_live_[0-9a-zA-Z]{24}"      # Stripe Live Key
+)
+
+EXIT_CODE=0
+
+for PATTERN in "${SECRET_PATTERNS[@]}"; do
+  # Scan staged files for these patterns
+  if git diff --cached --name-only | xargs grep -E "$PATTERN" > /dev/null 2>&1; then
+    echo "❌ ERROR: Potential secret or sensitive data detected (matching pattern: $PATTERN)!"
+    EXIT_CODE=1
+  fi
+done
+
+# Basic PII check (e.g., common email formats that shouldn't be hardcoded)
+# Excluding the brand email hello@socian.eu
+if git diff --cached --name-only | xargs grep -E "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" | grep -v "hello@socian.eu" | grep . > /dev/null 2>&1; then
+   echo "⚠️ WARNING: Potential email address (PII) detected in code. Please verify it is intended."
+fi
+
+if [ $EXIT_CODE -ne 0 ]; then
+  echo "🚨 Commit aborted. Please remove sensitive data before committing."
+  exit $EXIT_CODE
+fi
+
+echo "✅ Security scan passed."
