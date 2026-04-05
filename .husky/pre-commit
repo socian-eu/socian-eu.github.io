@@ -23,15 +23,15 @@ SECRET_PATTERNS=(
 )
 
 for PATTERN in "${SECRET_PATTERNS[@]}"; do
-  # Scan staged files in the build repository
-  if git diff --cached --name-only | xargs grep -E "$PATTERN" > /dev/null 2>&1; then
+  # Scan staged files in the build repository, excluding the hook itself
+  if git grep --cached -E "$PATTERN" -- ":!.husky" > /dev/null 2>&1; then
     echo "❌ ERROR: Potential secret detected in production assets (matching pattern: $PATTERN)!"
     EXIT_CODE=1
   fi
 done
 
 # 3. Basic PII check
-if git diff --cached --name-only | xargs grep -E "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" | grep -v "hello@socian.eu" | grep . > /dev/null 2>&1; then
+if git grep --cached -E "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" -- ":!.husky" | grep -v "hello@socian.eu" > /dev/null 2>&1; then
    echo "⚠️ WARNING: Potential email address detected in production files."
 fi
 
