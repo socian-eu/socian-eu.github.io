@@ -11,27 +11,36 @@ if command -v gitleaks >/dev/null 2>&1; then
   if ! gitleaks protect --staged --verbose; then
     EXIT_CODE=1
   fi
+else
+  echo "  ⚠️ gitleaks is not installed; only the pattern checks below will run."
 fi
 
 # 2. Manual pattern scan (portable fallback)
 SECRET_PATTERNS=(
-  "AIza[0-9A-Za-z-_]{35}"        # Google API Key
-  "AKIA[0-9A-Z]{16}"             # AWS Access Key
-  "-----BEGIN (RSA|OPENSSH|PRIVATE) KEY-----" # Private Keys
-  "xox[baprs]-[0-9a-zA-Z-]{10,}" # Slack Tokens
-  "sk_live_[0-9a-zA-Z]{24}"      # Stripe Live Key
+  "AIza[0-9A-Za-z_-]{35}"                          # Google API Key (Firebase, Maps, ...)
+  "AKIA[0-9A-Z]{16}"                               # AWS Access Key
+  "-----BEGIN ([A-Z]+ )*PRIVATE KEY( BLOCK)?-----" # Private Keys (RSA, EC, OPENSSH, PKCS#8, PGP)
+  "xox[baprs]-[0-9a-zA-Z-]{10,}"                   # Slack Tokens
+  "sk_live_[0-9a-zA-Z]{24}"                        # Stripe Live Key
 )
 
 for PATTERN in "${SECRET_PATTERNS[@]}"; do
-  # Scan staged files in the build repository, excluding the hook itself
-  if git grep --cached -E "$PATTERN" -- ":!.husky" > /dev/null 2>&1; then
+  # Scan staged files in the build repository, excluding the hook itself.
+  # git grep exits 0 on a match, 1 on no match and >1 on an error (e.g. an invalid pattern).
+  # (captured with `||` so the scan also works under `sh -e`)
+  STATUS=0
+  git grep --cached -q -E -e "$PATTERN" -- ":!.husky" || STATUS=$?
+  if [ $STATUS -eq 0 ]; then
     echo "❌ ERROR: Potential secret detected in production assets (matching pattern: $PATTERN)!"
+    EXIT_CODE=1
+  elif [ $STATUS -gt 1 ]; then
+    echo "❌ ERROR: Secret scan failed to run for pattern: $PATTERN"
     EXIT_CODE=1
   fi
 done
 
-# 3. Basic PII check
-if git grep --cached -E "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" -- ":!.husky" | grep -v "hello@socian.eu" > /dev/null 2>&1; then
+# 3. Basic PII check (each match on its own: minified bundles are one long line)
+if git grep --cached -h -o -E "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" -- ":!.husky" | grep -v -x -E "hello@socian\.eu" > /dev/null 2>&1; then
    echo "⚠️ WARNING: Potential email address detected in production files."
 fi
 
