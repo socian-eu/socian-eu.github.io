@@ -191,36 +191,38 @@
     <div class="legal-content">
       
 <h1>Privacy Policy</h1>
-<p class="effective-date"><strong>Last updated:</strong> October 22, 2026</p>
+<p class="effective-date"><strong>Last updated:</strong> October 24, 2026</p>
 
 <p>This Privacy Policy describes how <strong>Glowy</strong> ("we", "us", or "our"), operated by <strong>SOCIAN SOFT S.R.L.</strong>, collects, uses, and shares your information when you use our mobile application (the "App").</p>
 
 <h2>1. Information We Collect</h2>
 
 <h3>a. Information Automatically Collected</h3>
-<p>When you use the App, we automatically collect certain technical diagnostic data through trusted third-party services to ensure app stability and performance:</p>
+<p>When you use the App, some data is collected automatically by the third-party services below, to understand how the App is used, to fix errors, to manage subscriptions and, in the free version, to show ads:</p>
 <ul>
-  <li><strong>Usage Data:</strong> We use <strong>Firebase Analytics</strong> to collect anonymous aggregated analytics on app interactions (e.g., screen views, button clicks) to understand which features are helpful.</li>
-  <li><strong>Crash Reports:</strong> We use <strong>Firebase Crashlytics</strong> to collect anonymized stack traces and crash logs when unexpected errors occur so we can rapidly resolve them.</li>
-  <li><strong>Advertising:</strong> The free version of the App shows ads from <strong>Google Mobile Ads (AdMob)</strong>. In the European Economic Area, the United Kingdom and Switzerland, we ask for your consent through Google's consent form before any ad is requested. Google may use advertising identifiers (IDFA on iOS, Advertising ID on Android) only as far as your consent choices and your system tracking permissions allow. Subscribers do not see ads.</li>
-  <li><strong>Subscription Data:</strong> We use <strong>RevenueCat</strong> to manage, validate, and track your in-app purchase and subscription entitlements. We never receive or store your payment card numbers. All payments are handled by Apple (App Store) or Google (Google Play).</li>
+  <li><strong>Usage Data:</strong> We use <strong>Firebase Analytics</strong> (Google) to understand how the App is used, for example app opens, sessions and screens, when onboarding starts and ends (with the number of daily reminders you chose), when the subscription offer is shown, when a subscription is bought from that offer and which plan was chosen, in-app purchases, when the AI service is busy, and when an AI affirmation is reported. This data is linked to pseudonymous identifiers, an app-instance ID and your device's Advertising ID, and Google estimates your general location from your IP address. It is not anonymous. Since version 1.0.4 of the App, your name, goal, mood, chosen categories and the text you type are never sent to Firebase Analytics. Earlier versions sent your goal, your mood, your chosen categories and the App's random identifier when onboarding ended, and the text of any feedback you sent from Settings together with that identifier. Your name was never sent.</li>
+  <li><strong>Crash Reports:</strong> We use <strong>Firebase Crashlytics</strong> (Google) to collect crash and error reports: stack traces, the state of the App and device details (such as model and operating system version) at the time of the error, a Crashlytics installation ID and a list of recent Analytics events. If an AI answer cannot be read, the error report can include part of that answer, which may repeat words you typed. Crash reports are kept for 90 days.</li>
+  <li><strong>Advertising:</strong> The free version of the App shows banner ads from <strong>Google Mobile Ads (AdMob)</strong>. To show and measure ads and to prevent fraud, the AdMob SDK collects your IP address (used to estimate your general location), your interactions with ads and the App, diagnostic data, and device identifiers such as the Advertising ID and app set ID. Google uses this data as an independent controller, under its own privacy policy. Where the law requires it, for example in the European Economic Area, the United Kingdom and Switzerland, we ask for your consent through Google's consent form before any ad is requested, and you can change your choice at any time in Settings &rarr; Ad privacy choices. On iOS, Google uses the IDFA only if your system tracking permission allows it. On Android, you can reset or delete your Advertising ID in your device settings. Subscribers do not see ads.</li>
+  <li><strong>Subscription Data:</strong> We use <strong>RevenueCat</strong> to manage, validate, and track your in-app purchase and subscription entitlements. RevenueCat creates an anonymous ID for every installation of the App, including the free version, and keeps your purchase history, locale and currency. We never receive or store your payment card numbers. All payments are handled by Apple (App Store) or Google (Google Play).</li>
 </ul>
 
 <h3>b. Information You Provide &amp; Local-First Architecture</h3>
-<p>The App is intentionally architected to be <strong>local-first</strong> and does not require any user registration or account creation:</p>
+<p>The App is designed to be <strong>local-first</strong> and does not require any registration or account:</p>
 <ul>
-  <li>Your mood check-in records, personal reflections, saved affirmations, custom categories, and streak tracking are stored locally on your device storage. They leave your device only when you use AI affirmations (see section c below).</li>
-  <li>We do not store your personal identity, name, or email on remote databases.</li>
+  <li>Your name, goal, mood, chosen categories, reminder settings, liked and saved affirmations, your own affirmations, AI results and streak are stored on your device. Your goal, your mood and the text you type in the AI field leave your device only when you use AI affirmations (see section c below) and, in versions before 1.0.4, with the onboarding event described in section a.</li>
+  <li>The App does not send your name or email address to any server. We do not run a database for your data. Our only server is the AI server described in section c. If you email us, we receive your email address and your message and use them only to answer you.</li>
+  <li><strong>Device backup:</strong> If backup is turned on in your device settings (Android backup to your Google account, or an iCloud or computer backup on iPhone), your device may include the App's data, such as your name and your own affirmations, in that backup and restore it when you reinstall the App. We cannot access these backups. You can turn backup off in your device settings.</li>
 </ul>
 
 <h3>c. AI Affirmations (optional, Glowy Pro)</h3>
-<p>If you turn on AI and tap Generate, the App first asks for your permission. After you allow it, each request sends the following to our server:</p>
+<p>The first time you turn on AI, the App asks for your permission. After you allow it, each time you tap Generate the App sends the following to our server:</p>
 <ul>
   <li>the mood and the goal you chose in the App;</li>
   <li>the text you type in the AI field, if any;</li>
   <li>a random identifier created by the App on your device, used only to limit how often requests can be made.</li>
 </ul>
-<p>Your name is never sent. Our server runs on <strong>Cloudflare Workers</strong>. It forwards the request to <strong>OpenRouter</strong>, which passes it to an AI model provider, and it returns the generated affirmations to the App. We do not store the request or the response. The App uses free AI models, whose providers may store requests and use them to improve their models. This is why your name is never sent and why we ask you not to include personal details in the text you type. Cloudflare processes your IP address to protect the service from abuse (rate limiting). The generated affirmations are saved only on your device. Please do not include sensitive personal information in the text you type.</p>
+<p>Your name is never sent. If the service is busy, the App may resend the same request automatically when the wait time ends. Our server runs on <strong>Cloudflare Workers</strong>. It forwards your mood, your goal and your text, without the identifier, to <strong>OpenRouter</strong>, which passes them to an AI model provider. If a model does not answer, our server tries another one, up to four models in total. It returns the generated affirmations to the App. Our server does not save the request or the response. If an AI model fails, our server may log a short error message, which could include part of your text; these logs are deleted automatically within 7 days. The App uses free AI models, whose providers may store requests and use them to improve their models. This is why your name is never sent. Please do not include personal or sensitive details, such as health information, in the text you type. Cloudflare processes your IP address to protect the service from abuse (rate limiting). The generated affirmations are saved only on your device.</p>
+<p><strong>Reporting AI affirmations:</strong> You can report an AI affirmation with the flag button next to it. The App removes it from your AI affirmations on your device and records in Firebase Analytics that a report was made. The text of the affirmation is not sent.</p>
 
 <h2>2. How We Use Your Information</h2>
 <p>We use the collected information solely to:</p>
@@ -228,33 +230,50 @@
   <li>Provide, maintain, and improve the App's features and user experience.</li>
   <li>Diagnose technical bugs and crashes to ensure app stability.</li>
   <li>Process and verify subscription entitlements via the Apple App Store, Google Play and RevenueCat.</li>
-  <li>Generate AI affirmations when you request them.</li>
+  <li>Generate AI affirmations when you request them, and limit how often requests can be made to prevent abuse.</li>
+  <li>Count reports of AI affirmations, to improve the AI feature.</li>
   <li>Show ads in the free version, following your ad consent choices.</li>
   <li>Comply with applicable legal obligations.</li>
 </ul>
 
 <h2>3. Sharing Your Information</h2>
-<p>We do not sell, rent, or trade your personal data. We only share information with trusted third-party service providers strictly necessary to operate the App:</p>
+<p>We do not sell, rent, or trade your personal data. We share it only with the recipients below. Most act as our service providers. Google, for ads in the free version, and the AI model providers, which may use your requests to improve their models, also use the data for their own purposes. Depending on our Google Analytics data-sharing settings, Google may also use analytics data to improve its own products and services.</p>
 <ul>
-  <li><strong>Google (Firebase &amp; AdMob):</strong> For anonymized usage analytics, crash reporting, and ad serving in the free version.</li>
+  <li><strong>Google (Firebase &amp; AdMob):</strong> For usage analytics, crash reporting, and ad serving in the free version.</li>
   <li><strong>RevenueCat:</strong> For secure in-app subscription and receipt validation.</li>
   <li><strong>Cloudflare:</strong> Hosts the server that forwards AI requests.</li>
-  <li><strong>OpenRouter and the AI model provider it selects:</strong> Generate AI affirmations from the data listed in section 1.c, only when you use that feature.</li>
+  <li><strong>OpenRouter and the AI model providers it selects:</strong> Generate AI affirmations from the data listed in section 1.c, only when you use that feature.</li>
   <li><strong>Apple App Store and Google Play:</strong> For billing, payment processing, and application distribution.</li>
 </ul>
+<p>Our providers may process your data outside the European Economic Area, including in the United States. Google may process data wherever it has facilities, and OpenRouter may transfer data to its servers in the United States.</p>
 
-<h2>4. Your Rights &amp; Data Control</h2>
-<p>Because your affirmations, mood logs, and preferences are stored locally on your device, you have complete control over your data. You can erase this data at any time simply by clearing app data or uninstalling the App.</p>
+<h2 id="your-rights">4. Your Rights &amp; Data Control</h2>
+<p>Data stored only on your device is erased when you clear the App's data or uninstall the App. This does not erase copies already sent to the services in section 1, or a device backup.</p>
 <ul>
   <li><strong>Ad consent:</strong> Where consent is required, you can change your choice at any time in the App under Settings &rarr; Ad privacy choices.</li>
-  <li><strong>AI affirmations:</strong> Sending data to the AI service is based on your consent. You can stop at any time by turning AI off. Clearing the App's data also resets your choice. We do not keep AI requests, so there is no copy for us to delete afterwards. Requests already sent may be kept by the AI provider under its own terms.</li>
+  <li><strong>AI affirmations:</strong> Sending data to the AI service is based on your consent. Nothing is sent unless you turn on AI and tap Generate, and the AI switch is off each time you open it. A request that is waiting because the service was busy may still be sent automatically. To withdraw your consent, clear the App's data in your device settings; the App will then ask again. Requests already sent may be kept by the AI provider under its own terms.</li>
+  <li><strong>Deleting your data:</strong> To ask us to delete data held by our providers, email <a href="mailto:hello@socian.eu">hello@socian.eu</a>. For subscription records, include your Google Play order number (it starts with "GPA.") or your App Store order ID, so that we can find them. Analytics and crash data are linked only to random identifiers that we cannot connect to you, so we usually cannot find them; they are deleted automatically after the periods in section 5.</li>
 </ul>
 <p>Under the GDPR you have the right to access, rectify, erase, and restrict the processing of your personal data, to object to it, and to lodge a complaint with a supervisory authority (in Romania: ANSPDCP, <a href="https://www.dataprotection.ro">www.dataprotection.ro</a>). For any questions about your data rights, please contact us.</p>
 
-<h2>5. Changes to This Policy</h2>
+<h2>5. Data Retention and Security</h2>
+<ul>
+  <li>Firebase Analytics keeps event data linked to the identifiers above for up to 14 months. Reports that combine many users are not affected by this limit.</li>
+  <li>Firebase Crashlytics keeps crash reports for 90 days.</li>
+  <li>Error logs on our AI server are deleted automatically within 7 days.</li>
+  <li>RevenueCat keeps purchase records while we use its service, unless we delete them earlier at your request.</li>
+  <li>Google keeps advertising data under its own privacy policy.</li>
+  <li>Data stored on your device stays there until you delete it, clear the App's data or uninstall the App.</li>
+  <li>All data the App sends is encrypted in transit (HTTPS/TLS).</li>
+</ul>
+
+<h2>6. Children</h2>
+<p>Glowy is meant for adults aged 18 and over. It is not directed at children, and we do not knowingly collect data from children. If you think a child has used the App, contact us at <a href="mailto:hello@socian.eu">hello@socian.eu</a>.</p>
+
+<h2>7. Changes to This Policy</h2>
 <p>We may update this Privacy Policy from time to time. Any changes will be published on this page with an updated "Last updated" date.</p>
 
-<h2>6. Contact Us</h2>
+<h2>8. Contact Us</h2>
 <p>If you have any questions, suggestions, or concerns regarding this Privacy Policy or your data, please contact us at:</p>
 <p>
   <strong>SOCIAN SOFT S.R.L.</strong><br>
