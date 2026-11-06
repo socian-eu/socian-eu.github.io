@@ -15,6 +15,7 @@
 
   <style>
     :root {
+      color-scheme: light dark;
       --bg-cream: #FFF9F2;
       --card-bg: #FFFFFF;
       --card-alt: #FBF4ED;
@@ -717,6 +718,22 @@
       font-size: 0.85rem;
     }
 
+    .made-by svg {
+      width: 1em;
+      height: 0.875em;
+      fill: var(--accent);
+      vertical-align: -0.05em;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
     @media (max-width: 768px) {
       .nav-links {
         display: none;
@@ -737,6 +754,61 @@
       .footer-top, .footer-bottom {
         flex-direction: column;
         align-items: flex-start;
+      }
+    }
+
+    /* Dark mode follows the device setting and uses the app's dark colors. */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-cream: #121212;
+        --card-bg: #242424;
+        --card-alt: #2B2B2B;
+        --navy: #F5EFEA;
+        --navy-deep: #FFFFFF;
+        --accent-soft: rgba(255, 143, 102, 0.14);
+        --text-primary: #F5EFEA;
+        --text-secondary: #B9AEA7;
+        --border-color: #383330;
+        --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.25);
+        --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.3);
+        --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.4);
+      }
+
+      body {
+        background-image: radial-gradient(circle at 10% 10%, rgba(255, 143, 102, 0.1) 0%, transparent 40%), radial-gradient(circle at 90% 20%, rgba(255, 143, 102, 0.07) 0%, transparent 45%), radial-gradient(circle at 50% 80%, rgba(255, 179, 149, 0.05) 0%, transparent 50%);
+      }
+
+      header {
+        background: rgba(18, 18, 18, 0.85);
+        border-bottom-color: rgba(255, 255, 255, 0.06);
+      }
+
+      /* --navy turns light, so the store and email buttons get dark text. */
+      .btn-store,
+      .btn-store:hover,
+      .btn-email {
+        color: #121212 !important;
+      }
+
+      .support-card {
+        border-color: rgba(255, 143, 102, 0.35);
+      }
+
+      .topic-pill,
+      .quick-link-btn {
+        background: var(--card-alt);
+      }
+
+      .faq-answer {
+        border-top-color: var(--border-color);
+      }
+
+      footer {
+        background: #1A1A1A;
+      }
+
+      .footer-top {
+        border-bottom-color: var(--border-color);
       }
     }
   </style>
@@ -1036,6 +1108,9 @@
         </div>
         <div>
           Support Contact: <a href="mailto:hello@socian.eu">hello@socian.eu</a>
+        </div>
+        <div class="made-by">
+          Made with <svg viewBox="0 0 16 14" aria-hidden="true" focusable="false"><path d="M8 13.4 6.9 12.4C2.9 8.8.3 6.4.3 3.6.3 1.6 1.9 0 3.9 0c1.6 0 3.1.8 4.1 2 1-1.2 2.5-2 4.1-2 2 0 3.6 1.6 3.6 3.6 0 2.8-2.6 5.2-6.6 8.8Z"/></svg><span class="sr-only">love</span> by <a href="https://socian.eu/">socian.eu</a>
         </div>
       </div>
     </div>
